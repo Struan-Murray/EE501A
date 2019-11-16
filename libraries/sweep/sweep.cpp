@@ -3,14 +3,9 @@
 #include <Arduino.h>
 #include <Servo.h>
 
-Sweep::Sweep(){
-	servo.setPin(2);
-	ultrasound.setPin(13);
-}
-
-Sweep::Sweep(int8_t sig_s, int8_t sig_u){
-	servo.setPin(sig_s);
-	ultrasound.setPin(sig_u);
+Sweep::Sweep(int8_t pin_servo, int8_t pin_ultrasound){
+	servo.setPin(pin_servo);
+	ultrasound.setPin(pin_ultrasound);
 }
 
 void Sweep::start(){
@@ -28,6 +23,10 @@ int Sweep::right(){
 
 int Sweep::forward(){
 	return Sweep::angle(0);
+}
+
+int Sweep::front(){
+	return Sweep::forward();
 }
 
 int Sweep::angle(int a){

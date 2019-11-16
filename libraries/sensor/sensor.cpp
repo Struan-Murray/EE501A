@@ -3,7 +3,7 @@
 #include <Arduino.h>
 
 #define SPEED_OF_SOUND 340	//Speed of sound in current atmosphere.
-#define MAX_RANGE 1000    	//(In mm) Accuracy Tails off > 3500 mm.
+#define MAX_RANGE 1000    	//(In mm) Accuracy Tails off > 2000 mm.
 
 Sensor28015::Sensor28015():
 	sig_pin{0}{
@@ -33,7 +33,7 @@ int32_t Sensor28015::ping(){
 
 	pinMode(sig_pin, INPUT);
 
-	duration = pulseIn(sig_pin, HIGH, MAX_RANGE / SPEED_OF_SOUND * 2000);
+	duration = pulseIn(sig_pin, HIGH, (int32_t)2000 * (int32_t)MAX_RANGE / (int32_t)SPEED_OF_SOUND);
 
-	return duration * SPEED_OF_SOUND / 2000;
+	return duration * (int32_t)SPEED_OF_SOUND / (int32_t)2000;
 }
