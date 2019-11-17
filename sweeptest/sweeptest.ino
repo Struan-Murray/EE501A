@@ -29,6 +29,9 @@ void loop()
 
   printUSB();
 
+  Serial.println(sweep.block(80));
+  sweep.front();
+
   delay(1000);
 }
 

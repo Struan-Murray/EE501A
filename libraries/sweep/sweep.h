@@ -9,6 +9,7 @@ class Sweep
 private:
 	Sensor28015 ultrasound;
 	ServoSG90 servo;
+	int shortest;
 
 public:
 	/*Standard constructor, sets pins for servo and ultrasound.
@@ -29,6 +30,10 @@ public:
 	/*Return integer distance (mm) values from custom angle. (-90 Left to 90 Right)
 	 */
 	int angle(int a);
+
+	/*Sweeps an angle of 'a' in front of the sensor (-a/2 to a/2) and return the shortest distance.
+	 */
+	int Sweep::block(int a);
 };
 
 // Examle Use

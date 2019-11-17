@@ -33,3 +33,13 @@ int Sweep::angle(int a){
 	servo.angle(a);
 	return ultrasound.ping();
 }
+
+int Sweep::block(int a){
+	shortest = 10000;
+	
+	for(int i = -a/2; i <= a/2; i+=a/10){
+	shortest = min(shortest,Sweep::angle(i));
+	}
+
+	return shortest;
+}
