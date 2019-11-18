@@ -1,18 +1,24 @@
 #include "sensor.h"
 
-Sensor28015 ultrasound(13); //Assign pin to ultrasound sensor.
+Sensor28015 left(13), right(12); //Assign pin to ultrasound sensor.
 
 void setup()
 {
+  pinMode(11, OUTPUT);
+  pinMode(10, OUTPUT);
+  digitalWrite(10, HIGH);
+  digitalWrite(11, HIGH);
 	Serial.begin(9600);
-	ultrasound.start(); //Perform setup.
+	left.start(); //Perform setup.
+  right.start(); //Perform setup.
 }
 
 void loop()
 {
-  int distance = ultrasound.ping(); //Return distance in mm as integer.
-	Serial.print("Dist: ");
-	Serial.println(distance);
+	Serial.print("Left: ");
+	Serial.print(left.ping());
+  Serial.print(" Right: ");
+  Serial.println(right.ping());
 
 	delay(1000);
 }

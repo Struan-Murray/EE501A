@@ -7,6 +7,8 @@ Sweep sweeper(2,13);
 void setup()
 {
 	sweeper.start();
+  pinMode(12, OUTPUT);
+  digitalWrite(12, HIGH);
 }
 
 void loop()
@@ -17,10 +19,19 @@ void loop()
 	
 	if(distFront < 100){/*Disable forward motion*/}
 	else{/*Enable forward motion*/}
-	if(distLeft < 200){/*Disable right turn*/}
-	else{/*Enable right turn*/}
-	if(distRight < 200){/*Disable left turn*/}
-	else{/*Enable left turn*/}
+  if(distRight < 160){/*Disable front left turn*/}
+  else{/*Enable front left turn*/}
+	if(distRight < 220){/*Disable back left turn*/}
+	else{/*Enable back left turn*/}
+  if(distLeft < 160){/*Disable front right turn*/}
+  else{/*Enable front right turn*/}
+  if(distLeft < 220){/*Disable back right turn*/}
+  else{/*Enable back right turn*/}
 
-	delay(1000);
+  int a = sweeper.left();
+  int b = sweeper.angle(-60);
+  
+
+
+	delay(100);
 }

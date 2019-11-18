@@ -1,6 +1,6 @@
 #include "sweep.h"
 
-#define N 181 //Number of samples to take.
+#define N 11 //Number of samples to take.
 
 Sweep sweep(2, 13); //Servo pin 2, ultrasound pin 13.
 
@@ -11,6 +11,8 @@ void printUSB(); //Prints angles to serial.
 
 void setup()
 {
+  pinMode(12, OUTPUT);
+  digitalWrite(12, HIGH);
   Serial.begin(9600); //Begin USB comms.
   sweep.start(); //Assign pins.
   for(int i = 0; i < N; i++)
@@ -29,7 +31,7 @@ void loop()
 
   printUSB();
 
-  Serial.println(sweep.block(80));
+  Serial.println(sweep.block(180));
   sweep.front();
 
   delay(1000);
