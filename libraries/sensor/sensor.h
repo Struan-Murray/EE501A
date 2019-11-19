@@ -8,6 +8,7 @@ class Sensor28015
 private:
 	int8_t sig_pin;
 	int32_t duration;
+	int32_t distance;
 public:
 
 	/*Default constructor, sets no pins.
@@ -17,6 +18,35 @@ public:
 	/*Custom constructor, sets custom pins.
 	 */
 	Sensor28015(int8_t sig_p);
+
+	/*Allows external program to set pin before start()
+	 */
+	void setPin(int8_t sig_p);
+
+	/*Used to assign pin to Sensor (MUST BE PLACED IN SETUP)
+	 */
+	void start();
+
+	/*Returns integer value in mm.
+	 */
+	int32_t ping();
+};
+
+class Sensor0A41SK
+{
+private:
+	int8_t sig_pin;
+	int32_t duration;
+	int32_t distance;
+public:
+
+	/*Default constructor, sets no pins.
+	 */
+	Sensor0A41SK();
+
+	/*Custom constructor, sets custom pins.
+	 */
+	Sensor0A41SK(int8_t sig_p);
 
 	/*Allows external program to set pin before start()
 	 */
