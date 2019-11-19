@@ -37,3 +37,28 @@ int32_t Sensor28015::ping(){
 
 	return duration * (int32_t)SPEED_OF_SOUND / (int32_t)2000;
 }
+
+Sensor0A41SK::Sensor0A41SK():
+	sig_pin{0}{
+}
+
+Sensor0A41SK::Sensor0A41SK(int8_t sig_p):
+	sig_pin{sig_p}{
+}
+
+void Sensor0A41SK::setPin(int8_t sig_p){
+	sig_pin = sig_p;
+}
+
+void Sensor0A41SK::start(){
+	pinMode(sig_pin, INPUT);
+}
+
+int32_t Sensor0A41SK::ping(){
+	pinMode(sig_pin, INPUT);
+
+	float voltage = analogRead(sig_pin) * 0.0048828125;
+	distance = 13*pow(voltage,-1);
+
+	return distance;
+}
