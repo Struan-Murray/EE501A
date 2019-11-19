@@ -56,9 +56,12 @@ void Sensor0A41SK::start(){
 
 int32_t Sensor0A41SK::ping(){
 	pinMode(sig_pin, INPUT);
+	
+	delay(25);
 
 	float voltage = analogRead(sig_pin) * 0.0048828125;
-	distance = 13*pow(voltage,-1);
+	distance = 125.6*pow(voltage,-1.07);
 
-	return distance;
+	if(distance < 300.0){return distance;}
+	else{return 0;}
 }

@@ -4,17 +4,22 @@
 #include "servo.h"
 #include "sensor.h"
 
+#define N 11
+
 class Sweep
 {
 private:
-	Sensor28015 ultrasound;
+	Sensor0A41SK sensor;
 	ServoSG90 servo;
 	int shortest;
+	const int c_samples{N};
+	int angl[N] = {0};
+	int dist[N] = {0};
 
 public:
 	/*Standard constructor, sets pins for servo and ultrasound.
 	 */
-	Sweep(int8_t pin_servo, int8_t pin_ultrasound);
+	Sweep(int8_t pin_servo, int8_t pin_sensor);
 
 	/*Used to assign pins to Sweep (MUST BE PLACED IN SETUP)
 	 */
@@ -31,29 +36,17 @@ public:
 	 */
 	int angle(int a);
 
-	/*Sweeps an angle of 'a' in front of the sensor (-a/2 to a/2) and return the shortest distance.
+	/*Fill dist and angle with a sweep.
 	 */
-	int Sweep::block(int a);
+	void sweep();
+
+	/*Find smallest result from dist matrix.
+	 */
+	int smallestLoc();
+	int smallest();
+	/*Work out car angle from sweep
+	 */
+	int carAngle();
 };
-
-// Examle Use
-/*
-Sweep sweeper(2,13);
-
-void setup()
-{
-	sweeper.start(); //Assigns pins, does trivial in/out setup.
-}
-
-void loop()
-{
-	sweep.left(); //Moves servo to left(-90 degrees) and returns sensor distance.
-	sweep.right(); //Moves servo to right(90 degrees) and returns sensor distance.
-	sweep.angle(-45); //Moves servo 45 degrees to left of centre and returns distance.
-	sweep.angle(20); //Moves servo 20 degrees to right of centre and returns distance.
-	sweep.front(); //Moves servo to front and returns distance.
-}
-*/
-
 
 #endif

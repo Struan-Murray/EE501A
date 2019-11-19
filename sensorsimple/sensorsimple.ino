@@ -1,24 +1,21 @@
 #include "sensor.h"
 
-Sensor28015 left(13), right(12); //Assign pin to ultrasound sensor.
+Sensor28015 sound(13); //Assign pin to ultrasound sensor.
+Sensor0A41SK ir(A0);
 
 void setup()
 {
-  pinMode(11, OUTPUT);
-  pinMode(10, OUTPUT);
-  digitalWrite(10, HIGH);
-  digitalWrite(11, HIGH);
 	Serial.begin(9600);
-	left.start(); //Perform setup.
-  right.start(); //Perform setup.
+	sound.start(); //Perform setup.
+  ir.start();
 }
 
 void loop()
 {
-	Serial.print("Left: ");
-	Serial.print(left.ping());
-  Serial.print(" Right: ");
-  Serial.println(right.ping());
-
-	delay(1000);
+	Serial.print("Sound:");
+  Serial.print(sound.ping());
+  Serial.print(",IR:");
+  Serial.println(ir.ping());
+  
+	delay(100);
 }
