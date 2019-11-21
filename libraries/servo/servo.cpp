@@ -24,6 +24,6 @@ void ServoSG90::start(){
 void ServoSG90::angle(int16_t ang){
 	requested_angle = map(ang, -90, 90, 180, 0);
 	s.write(requested_angle);
-	delay(360*abs(requested_angle-current_angle)/60);
+	delay(240*abs(requested_angle-current_angle)/60);
 	current_angle = requested_angle;
 }
