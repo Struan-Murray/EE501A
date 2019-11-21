@@ -1,5 +1,5 @@
-#ifndef MAZEMOTOR_h
-#define MAZEMOTOR_h
+#ifndef MAZEMOTORINTEGRATION_h
+#define MAZEMOTORINTEGRATION_h
 
 // The following is useful for use with the Visual Studio Projects provided.
 #ifdef COMPILE_CPP_NOT_ARDUINO
@@ -15,15 +15,12 @@ class mazeMotor{
 		int motor_pin;
         int direction_pin;
         int reference_pwm;
-        int low_pwm_limit;
-        int high_pwm_limit;
+        int low_pwm_limit;  // Added.
+        int high_pwm_limit; // Added.
 		int current_pwm;
     	int off_pwm;
         int odometer_pin;
         int current_direction;  // Stopped = 0, Forwards = 1, Backwards = 2
-        int heading;    // Added.
-        int x_position; // Added.
-        int y_position; // Added.
         int odometer_reading;
         boolean motor_enabled;
         boolean direction_enabled;
@@ -57,17 +54,14 @@ class mazeMotor{
 			motor_pin = -1;
             direction_pin = -1;
             reference_pwm = 0;
-            low_pwm_limit = 0;
-            high_pwm_limit = 0;
+            low_pwm_limit = 0;  // Added.
+            high_pwm_limit = 0; // Added.
 			current_pwm = 0;
 			off_pwm = 0; 
 			motor_enabled = false;
             direction_enabled = false;
 			motor_on = false;
             current_direction = 0;
-            heading = 0;    // Added.
-            x_position = 0; // Added.
-            y_position = 0; // Added.
             odometer_pin = -1;
             odometer_reading = 0;
             odometer_enabled = false;
@@ -223,7 +217,7 @@ class mazeMotor{
         }
     
     
-        void set_odometer_value(int magnets){
+        void set_odometer_value(int magnets){   // Added.
             odometer_reading = magnets;
         }
     
@@ -245,18 +239,18 @@ class mazeMotor{
         }
     
         
-        void set_reference_pwm(int ref_pwm){
+        void set_reference_pwm(int ref_pwm){    // If error, return this to private section.
             if (ref_pwm<235 && ref_pwm>25){
                 reference_pwm = ref_pwm;
-                low_pwm_limit = ref_pwm - 25;
-                high_pwm_limit = ref_pwm + 25;
+                low_pwm_limit = ref_pwm - 25;   // Added.
+                high_pwm_limit = ref_pwm + 25;  // Added.
                 current_pwm = ref_pwm;
             }
         }
         
         
         void decrease_speed_incrementally(){
-            if (current_pwm > low_pwm_limit){
+            if (current_pwm > low_pwm_limit){             // Added.
                 current_pwm = current_pwm - 5;
                 set_motor_pin_on();
             }
@@ -264,7 +258,7 @@ class mazeMotor{
         
         
         void increase_speed_incrementally(){
-            if (current_pwm < high_pwm_limit){
+            if (current_pwm < high_pwm_limit){             // Added.
                 current_pwm = current_pwm + 5;
                 set_motor_pin_on();
             }
@@ -273,90 +267,6 @@ class mazeMotor{
 
         int return_current_direction(){
             return current_direction;
-        }
-    
-        
-        void increase_heading(){
-            heading = heading + 1;
-            if (heading == 4){
-                heading = 0;
-            }
-        }
-        
-        
-        void decrease_heading(){
-            heading = heading - 1;
-            if (heading == -1){
-                heading = 3;
-            }
-        }
-    
-        
-        void update_xy_value(){
-            switch(heading){
-                case 0:
-                    if(current_direction == 1){
-                        y_position++;
-                    }
-                    else if(current_direction == 2){
-                        y_position--;
-                    }
-                    break;
-                case 1:
-                    if(current_direction == 1){
-                        x_position++;
-                    }
-                    else if(current_direction == 2){
-                        x_position--;
-                    }
-                    break;
-                case 2:
-                    if(current_direction == 1){
-                        y_position--;
-                    }
-                    else if(current_direction == 2){
-                        y_position++;
-                    }
-                    break;
-                case 3:
-                    if(current_direction == 1){
-                        x_position--;
-                    }
-                    else if(current_direction == 2){
-                        x_position++;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-        
-        int return_x_distance(){
-            static double magnet_displacement = 0.37186;
-            double distance = x_position*magnet_displacement;
-            return (int)distance;
-        }
-    
-        int return_y_distance(){
-            static double magnet_displacement = 0.37186;
-            double distance = y_position*magnet_displacement;
-            return (int)distance;
-        }
-    
-        int return_x_position_mag(){
-            return x_position;
-        }
-    
-        int return_y_position_mag(){
-            return y_position;
-        }
-    
-        int set_x_position_mag(int x){
-            x_position = x;
-        }
-    
-        int set_y_position_mag(int y){
-            y_position = y;
         }
     
   
