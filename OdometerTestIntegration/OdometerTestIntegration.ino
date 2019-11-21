@@ -3,7 +3,6 @@
 #include <Arduino.h>; // Is this needed?
 #include <math.h>;  // Is this needed?
 
-
 #define STOPPED   0
 #define FORWARDS  1
 #define BACKWARDS 2
@@ -97,8 +96,6 @@ void left_odometer_update(){
   Serial.print(motor_left.return_current_motor_pwm());
   Serial.print(" ");
   Serial.println(motor_left.display_distance());
-  
-
 }*/
 
 // SONAR SENSORS
@@ -121,10 +118,7 @@ void update_motor_speed(){
   Serial.print(motor_left.return_current_motor_pwm());
   Serial.print(" ");
   Serial.println(motor_left.display_distance());
-  
-
 }
-
 
 // TEST.
 void turn_clockwise(){

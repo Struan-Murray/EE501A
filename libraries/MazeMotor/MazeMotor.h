@@ -14,11 +14,16 @@ class mazeMotor{
 	protected:
 		int motor_pin;
         int direction_pin;
-        int reference_pwm;  // Added.
+        int reference_pwm;
+        int low_pwm_limit;
+        int high_pwm_limit;
 		int current_pwm;
     	int off_pwm;
         int odometer_pin;
         int current_direction;  // Stopped = 0, Forwards = 1, Backwards = 2
+        int heading;    // Added.
+        int x_position; // Added.
+        int y_position; // Added.
         int odometer_reading;
         boolean motor_enabled;
         boolean direction_enabled;
@@ -46,27 +51,23 @@ class mazeMotor{
             current_direction = 2;
             digitalWrite(direction_pin, LOW);
         }
-    
-        
-        void set_reference_pwm(int ref_pwm){
-            if (ref_pwm<206){
-                reference_pwm = ref_pwm;    // Added.
-                current_pwm = ref_pwm;
-            }
-            
-        }
         
         
     	void set_default_vals(){         // Initialize variables to default values.
 			motor_pin = -1;
             direction_pin = -1;
-            reference_pwm = 0;      // Added.
+            reference_pwm = 0;
+            low_pwm_limit = 0;
+            high_pwm_limit = 0;
 			current_pwm = 0;
 			off_pwm = 0; 
 			motor_enabled = false;
             direction_enabled = false;
 			motor_on = false;
-            current_direction = 0;      // Stopped.
+            current_direction = 0;
+            heading = 0;    // Added.
+            x_position = 0; // Added.
+            y_position = 0; // Added.
             odometer_pin = -1;
             odometer_reading = 0;
             odometer_enabled = false;
@@ -209,33 +210,153 @@ class mazeMotor{
         
     
         void update_odometer_value(){
-            odometer_reading += 1;
+            switch(current_direction){
+                case 1:
+                    odometer_reading += 1;
+                    break;
+                case 2:
+                    odometer_reading -= 1;
+                    break;
+                default:
+                    break;
+            }
+        }
+    
+    
+        void set_odometer_value(int magnets){
+            odometer_reading = magnets;
+        }
+    
+    
+        int display_distance(){
+            static double magnet_displacement = 0.37186;
+            double distance = odometer_reading*magnet_displacement;
+            return (int)distance;
         }
         
         
         int return_current_motor_pwm(){
             return current_pwm;
         }
+    
+    
+        void set_max_pwm(){
+            current_pwm = 255;
+        }
+    
+        
+        void set_reference_pwm(int ref_pwm){
+            if (ref_pwm<235 && ref_pwm>25){
+                reference_pwm = ref_pwm;
+                low_pwm_limit = ref_pwm - 25;
+                high_pwm_limit = ref_pwm + 25;
+                current_pwm = ref_pwm;
+            }
+        }
         
         
         void decrease_speed_incrementally(){
-            if (current_pwm > (reference_pwm - 50)){
-                current_pwm = current_pwm - 5;  // Original.
-                analogWrite(motor_pin, current_pwm);
+            if (current_pwm > low_pwm_limit){
+                current_pwm = current_pwm - 5;
+                set_motor_pin_on();
             }
         }
         
         
         void increase_speed_incrementally(){
-            if (current_pwm < (reference_pwm + 50)){
-                current_pwm = current_pwm + 5;  // Original.
-                analogWrite(motor_pin, current_pwm);
+            if (current_pwm < high_pwm_limit){
+                current_pwm = current_pwm + 5;
+                set_motor_pin_on();
             }
         }
 
 
         int return_current_direction(){
             return current_direction;
+        }
+    
+        
+        void increase_heading(){
+            heading = heading + 1;
+            if (heading == 4){
+                heading = 0;
+            }
+        }
+        
+        
+        void decrease_heading(){
+            heading = heading - 1;
+            if (heading == -1){
+                heading = 3;
+            }
+        }
+    
+        
+        void update_xy_value(){
+            switch(heading){
+                case 0:
+                    if(current_direction == 1){
+                        y_position++;
+                    }
+                    else if(current_direction == 2){
+                        y_position--;
+                    }
+                    break;
+                case 1:
+                    if(current_direction == 1){
+                        x_position++;
+                    }
+                    else if(current_direction == 2){
+                        x_position--;
+                    }
+                    break;
+                case 2:
+                    if(current_direction == 1){
+                        y_position--;
+                    }
+                    else if(current_direction == 2){
+                        y_position++;
+                    }
+                    break;
+                case 3:
+                    if(current_direction == 1){
+                        x_position--;
+                    }
+                    else if(current_direction == 2){
+                        x_position++;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+        int return_x_distance(){
+            static double magnet_displacement = 0.37186;
+            double distance = x_position*magnet_displacement;
+            return (int)distance;
+        }
+    
+        int return_y_distance(){
+            static double magnet_displacement = 0.37186;
+            double distance = y_position*magnet_displacement;
+            return (int)distance;
+        }
+    
+        int return_x_position_mag(){
+            return x_position;
+        }
+    
+        int return_y_position_mag(){
+            return y_position;
+        }
+    
+        int set_x_position_mag(int x){
+            x_position = x;
+        }
+    
+        int set_y_position_mag(int y){
+            y_position = y;
         }
     
   
