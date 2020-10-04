@@ -4,12 +4,12 @@
 #include "servo.h"
 #include "sensor.h"
 
-#define N 11
+#define N 11 //Number of samples to take.
 
 class Sweep
 {
 private:
-	Sensor0A41SK sensor;
+	Sensor28015 sensor;
 	ServoSG90 servo;
 	int shortest;
 	const int c_samples{N};

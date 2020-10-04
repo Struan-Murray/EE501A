@@ -1,6 +1,6 @@
 #include "sweep.h"
 
-Sweep sweep(2, A0); //Servo pin 2, ultrasound pin 13.
+Sweep sweep(2, 13); //Servo pin 2, ultrasound pin 13.
 
 void setup()
 {
@@ -15,8 +15,6 @@ void loop()
   int forwardDistance = sweep.forward(); //As above but front(0 deg).
   int custom1Distance = sweep.angle(-35); //As above but leftish(-35 deg).
   int custom2Distance = sweep.angle(45); //As above but rightish(45 deg).
-
-  Serial.println(leftDistance);
 
   delay(1000);
 }

@@ -83,5 +83,3 @@ int Sweep::carAngle(){
 	return aB-thetaS;	
 }
 
-
-
